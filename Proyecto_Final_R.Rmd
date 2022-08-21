@@ -1,0 +1,73 @@
+#--------------------1. CONOCIENDO LOS DATOS -----------------------------------
+#-------------------1.1 Cargue el paquete tidyverse-----------------------------
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+#-------------------1.2 Leer y Cargar archivos ---------------------------------
+```{r}
+yearly <- read.csv("deaths_handwashing.csv")
+
+#--------------------------1.3 Imprimir yearly ---------------------------------
+yearly
+```
+
+#--------------------2. MUERTES ALARMANTES--------------------------------------
+#----------------2.1 Agregar la columna proportion_deaths-----------------------
+```{r}
+yearly <- yearly %>%
+  mutate(proportion_deaths = deaths/births)
+
+#--------------------------2.2 Imprimir yearly ---------------------------------
+yearly
+```
+
+#--------------------3. MUERTES EN CLINICAS-------------------------------------
+#----------------3.1 Graficar proportion_daths por año--------------------------
+#--------------3.2 Agregar color a cada gráfica clinica-------------------------
+```{r}
+ggplot(yearly, aes(x = year, y = proportion_deaths, color = clinic)) +
+  geom_line()
+
+```
+
+#-----------------------4. LAVADO DE MANOS--------------------------------------
+#----------------4.1 Cargar los datos de la Clínica 1---------------------------
+```{r}
+monthly <- read.csv("deaths_clinic_1.csv")
+
+#----------------4.2 Agregar la columna proportion_deaths-----------------------
+
+monthly <- monthly %>%
+  mutate(proportion_deaths = deaths/births)
+
+monthly <- transform(monthly, date = as.Date(date))
+
+#---------------4.3 Imprima las primeras filas con head()-----------------------
+
+head(monthly)
+```
+
+#-----------------------5. LAVADO DE MANOS--------------------------------------
+#--------------5.1 Graficar proportion_deaths por fecha-------------------------
+```{r}
+ggplot(monthly, aes(x = date, y = proportion_deaths)) +
+  geom_line() +
+#-----------------5.2 Cambiar las etiquetas de los ejes-------------------------
+  labs(x = "Años", y = "Proporcion de Muertes respecto a nacimientos")
+```
+#------5.3 Encontrar la media por año y asignarlo a death_by_year---------------
+```{r}
+death_by_year <- monthly %>%
+  mutate(date = as.numeric(format(date, "%Y"))) %>%
+  group_by(date) %>%
+  summarise(average_deaths = mean(deaths))
+```
+
+#----------------5.4 Grafico de barras para death_by_year-----------------------
+```{r}
+ggplot(death_by_year, aes(x=date, y=average_deaths)) +
+         geom_col()
+```
+
