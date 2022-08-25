@@ -71,3 +71,18 @@ ggplot(death_by_year, aes(x=date, y=average_deaths)) +
          geom_col()
 ```
 
+#-------------------6. RESULTADO LAVADO DE MANOS--------------------------------
+#--------------6.1 Agregar columna handwashing_started--------------------------
+```{r}
+monthly <- monthly %>%
+  mutate(handwashing_started = ifelse(format(date, "%Y") >= 1847, TRUE, FALSE)) 
+
+```
+#--------------6.2 Gráfica lineal para proportion_deaths------------------------
+```{r}
+ggplot(monthly, aes(x = date, y = proportion_deaths, color = handwashing_started)) +
+  geom_line() +
+#-----------------6.3 Cambiar las etiquetas de los ejes-------------------------
+  labs(x = "Años", y = "Proporcion de Muertes respecto a nacimientos")
+
+```
