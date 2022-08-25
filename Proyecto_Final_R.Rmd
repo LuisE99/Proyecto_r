@@ -86,3 +86,21 @@ ggplot(monthly, aes(x = date, y = proportion_deaths, color = handwashing_started
   labs(x = "Años", y = "Proporcion de Muertes respecto a nacimientos")
 
 ```
+
+#------------------7. MÁS LAVADO DE MANOS, MENOS MUERTES------------------------
+#----------7.1 Promedio antes y despues del lavado de manos---------------------
+```{r}
+month_summary <- monthly %>%
+  group_by(handwashing_started) %>%
+  summarise(mean_proportion_deaths = mean(proportion_deaths))
+
+
+#-----------------7.2 y 7.3 Imprimir month_summary------------------------------
+month_summary
+```
+
+#-----------------------8. ANÁLISIS ESTADÍSTICO---------------------------------
+```{r}
+t.test(proportion_deaths ~ handwashing_started, data = monthly)
+```
+
