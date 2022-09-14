@@ -62,7 +62,7 @@ ggplot(monthly, aes(x = date, y = proportion_deaths)) +
 death_by_year <- monthly %>%
   mutate(date = as.numeric(format(date, "%Y"))) %>%
   group_by(date) %>%
-  summarise(average_deaths = mean(deaths))
+  summarise(average_deaths = median(deaths))
 ```
 
 #----------------5.4 Grafico de barras para death_by_year-----------------------
